@@ -6,16 +6,25 @@ import MainPage from '../../pages/main-page/main-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import Page404 from '../404/404';
 import PrivateRoute from '../private-route/private-route';
+import { Offers } from '../../types/offers';
 
+type AppProps = {
+  offers: Offers;
+}
 
-function App(props: {placesCardsCount: number}): JSX.Element {
+function App({offers}: AppProps): JSX.Element {
+
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route
             path={AppRoute.Main}
-            element={<MainPage placesCardsCount={props.placesCardsCount}/>}
+            element={
+              <MainPage
+                offers = {offers}
+              />
+            }
           />
           <Route
             path={AppRoute.Login}
@@ -27,7 +36,9 @@ function App(props: {placesCardsCount: number}): JSX.Element {
               <PrivateRoute
                 authorizationStatus={AuthorizationStatus.Auth}
               >
-                <PropertyPage/>
+                <PropertyPage
+                  offers = {offers[0]}
+                />
               </PrivateRoute>
             }
           />

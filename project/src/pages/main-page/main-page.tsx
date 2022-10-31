@@ -1,9 +1,13 @@
-import PlacesCard from '../../components/places-card';
 import Logo from '../../components/logo/logo';
 import {Helmet} from 'react-helmet-async';
+import { Offers } from '../../types/offers';
+import PlacesCardList from '../../components/places-card-list/places-card-list';
 
+type MainPageProps = {
+  offers: Offers;
+}
 
-function MainPage(props: {placesCardsCount: number}): JSX.Element {
+function MainPage({offers}: MainPageProps): JSX.Element {
   return (
     <div>
       <Helmet>
@@ -78,7 +82,7 @@ function MainPage(props: {placesCardsCount: number}): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">{offers.length} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -95,7 +99,9 @@ function MainPage(props: {placesCardsCount: number}): JSX.Element {
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {Array(props.placesCardsCount).fill(<PlacesCard />)}
+                <PlacesCardList
+                  offers={offers}
+                />
               </div>
             </section>
             <div className="cities__right-section">
