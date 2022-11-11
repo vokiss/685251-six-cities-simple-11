@@ -7,12 +7,14 @@ import PropertyPage from '../../pages/property-page/property-page';
 import Page404 from '../404/404';
 import PrivateRoute from '../private-route/private-route';
 import { Offers } from '../../types/offers';
+import { useState } from 'react';
 
 type AppProps = {
   offers: Offers;
 }
 
 function App({offers}: AppProps): JSX.Element {
+  const [activeCard, setActiveCard] = useState('');
 
   return (
     <HelmetProvider>
@@ -23,6 +25,8 @@ function App({offers}: AppProps): JSX.Element {
             element={
               <MainPage
                 offers = {offers}
+                activeCard={activeCard}
+                onSelectCard={setActiveCard}
               />
             }
           />
@@ -37,13 +41,13 @@ function App({offers}: AppProps): JSX.Element {
                 authorizationStatus={AuthorizationStatus.Auth}
               >
                 <PropertyPage
-                  offers = {offers[0]}
+                  offers={offers} activeCard={activeCard} onSelectCard={setActiveCard}
                 />
               </PrivateRoute>
             }
           />
           <Route
-            path="*"
+            path={AppRoute.NotFound}
             element={<Page404/>}
           />
         </Routes>

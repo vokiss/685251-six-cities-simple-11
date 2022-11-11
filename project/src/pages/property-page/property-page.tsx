@@ -1,20 +1,37 @@
 import Logo from '../../components/logo/logo';
 import {Helmet} from 'react-helmet-async';
-import { Offer } from '../../types/offers';
+import { Offers } from '../../types/offers';
 import PropertyReviews from '../../components/property-reviews/property-reviews';
+import Map from '../../components/map-leaflet/map';
+import { Navigate, useParams } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import PropertyPhoto from '../../components/property-gallery-photo/property-gallery-photo';
+import PlacesCardList from '../../components/places-card-list/places-card-list';
+import PropertyReviewForm from '../../components/property-reviews/property-review-form';
+import { reviews } from '../../mocks/reviews';
 
 type PropertyPageProps = {
-  offers: Offer;
+  offers: Offers;
+  activeCard: string;
+  onSelectCard: (id: string) => void;
 }
 
 function PropertyPage(props: PropertyPageProps): JSX.Element {
-  const {offers} = props;
-  const {images, price, title,
-    type, rating, isPremium, bedrooms, maxAdults, goods,
-    description, host} = offers;
+  const {offers, activeCard, onSelectCard} = props;
+  const routePath = useParams();
+  const currentOffer = offers.find((offer) => offer.id === routePath.id);
+  const otherOffers = offers.filter((offer) => offer.id !== routePath.id);
+
+  if (!currentOffer) {
+    return <Navigate to={AppRoute.NotFound} />;
+  }
+  const { images, price, title, type, rating, isPremium, bedrooms, maxAdults, goods,
+    description, host} = currentOffer;
   const ratingStyle = {
     width: `${rating * 20}%`,
   };
+
+  const currentReviews = reviews.filter((review) => review.offerId === routePath.id);
 
   return (
     <div>
@@ -53,24 +70,7 @@ function PropertyPage(props: PropertyPageProps): JSX.Element {
           <section className="property">
             <div className="property__gallery-container container">
               <div className="property__gallery">
-                <div className="property__image-wrapper">
-                  <img className="property__image" src={images[0]} alt="studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src={images[1]} alt="studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src={images[1]} alt="studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src={images[1]} alt="studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src={images[1]} alt="studio" />
-                </div>
-                <div className="property__image-wrapper">
-                  <img className="property__image" src={images[1]} alt="studio" />
-                </div>
+                {images.map((image) => <PropertyPhoto key={image} image={image} />)}
               </div>
             </div>
             <div className="property__container container">
@@ -109,21 +109,7 @@ function PropertyPage(props: PropertyPageProps): JSX.Element {
                 <div className="property__inside">
                   <h2 className="property__inside-title">What&apos;s inside</h2>
                   <ul className="property__inside-list">
-                    <li className="property__inside-item">
-                      {goods[0]}
-                    </li>
-                    <li className="property__inside-item">
-                      {goods[1]}
-                    </li>
-                    <li className="property__inside-item">
-                      {goods[2]}
-                    </li>
-                    <li className="property__inside-item">
-                      {goods[3]}
-                    </li>
-                    <li className="property__inside-item">
-                      {goods[4]}
-                    </li>
+                    {goods.map((feature) => <li className="property__inside-item" key={feature}>{feature}</li> )}
                   </ul>
                 </div>
                 <div className="property__host">
@@ -149,93 +135,22 @@ function PropertyPage(props: PropertyPageProps): JSX.Element {
                     </p>
                   </div>
                 </div>
-                <PropertyReviews />
+                <section className="property__reviews reviews">
+                  <h2 className="reviews__title">Reviews · <span className="reviews__amount">{currentReviews.length}</span></h2>
+                  <PropertyReviews reviews={currentReviews}/>
+                  <PropertyReviewForm />
+                </section>
               </div>
             </div>
-            <section className="property__map map" />
+            <section className="property__map map">
+              <Map offers={otherOffers} activeCard={activeCard} />
+            </section>
           </section>
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
-                <article className="near-places__card place-card">
-                  <div className="near-places__image-wrapper place-card__image-wrapper">
-                    <a href="/">
-                      <img className="place-card__image" src="img/room.jpg" width={260} height={200} alt="Place" />
-                    </a>
-                  </div>
-                  <div className="place-card__info">
-                    <div className="place-card__price-wrapper">
-                      <div className="place-card__price">
-                        <b className="place-card__price-value">€80</b>
-                        <span className="place-card__price-text">/&nbsp;night</span>
-                      </div>
-                    </div>
-                    <div className="place-card__rating rating">
-                      <div className="place-card__stars rating__stars">
-                        <span style={{width: '80%'}} />
-                        <span className="visually-hidden">Rating</span>
-                      </div>
-                    </div>
-                    <h2 className="place-card__name">
-                      <a href="/">Wood and stone place</a>
-                    </h2>
-                    <p className="place-card__type">Private room</p>
-                  </div>
-                </article>
-                <article className="near-places__card place-card">
-                  <div className="near-places__image-wrapper place-card__image-wrapper">
-                    <a href="/">
-                      <img className="place-card__image" src="img/apartment-02.jpg" width={260} height={200} alt="Place" />
-                    </a>
-                  </div>
-                  <div className="place-card__info">
-                    <div className="place-card__price-wrapper">
-                      <div className="place-card__price">
-                        <b className="place-card__price-value">€132</b>
-                        <span className="place-card__price-text">/&nbsp;night</span>
-                      </div>
-                    </div>
-                    <div className="place-card__rating rating">
-                      <div className="place-card__stars rating__stars">
-                        <span style={{width: '80%'}} />
-                        <span className="visually-hidden">Rating</span>
-                      </div>
-                    </div>
-                    <h2 className="place-card__name">
-                      <a href="/">Canal View Prinsengracht</a>
-                    </h2>
-                    <p className="place-card__type">Apartment</p>
-                  </div>
-                </article>
-                <article className="near-places__card place-card">
-                  <div className="place-card__mark">
-                    <span>Premium</span>
-                  </div>
-                  <div className="near-places__image-wrapper place-card__image-wrapper">
-                    <a href="/">
-                      <img className="place-card__image" src="img/apartment-03.jpg" width={260} height={200} alt="Place" />
-                    </a>
-                  </div>
-                  <div className="place-card__info">
-                    <div className="place-card__price-wrapper">
-                      <div className="place-card__price">
-                        <b className="place-card__price-value">€180</b>
-                        <span className="place-card__price-text">/&nbsp;night</span>
-                      </div>
-                    </div>
-                    <div className="place-card__rating rating">
-                      <div className="place-card__stars rating__stars">
-                        <span style={{width: '100%'}} />
-                        <span className="visually-hidden">Rating</span>
-                      </div>
-                    </div>
-                    <h2 className="place-card__name">
-                      <a href="/">Nice, cozy, warm big bed apartment</a>
-                    </h2>
-                    <p className="place-card__type">Apartment</p>
-                  </div>
-                </article>
+                <PlacesCardList offers={otherOffers} activeCard={activeCard} onSelectCard={onSelectCard} className={'near-places'}/>
               </div>
             </section>
           </div>

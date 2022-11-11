@@ -2,12 +2,15 @@ import Logo from '../../components/logo/logo';
 import {Helmet} from 'react-helmet-async';
 import { Offers } from '../../types/offers';
 import PlacesCardList from '../../components/places-card-list/places-card-list';
+import Map from '../../components/map-leaflet/map';
 
 type MainPageProps = {
   offers: Offers;
+  activeCard: string;
+  onSelectCard: (id: string) => void;
 }
 
-function MainPage({offers}: MainPageProps): JSX.Element {
+function MainPage({offers, activeCard, onSelectCard}: MainPageProps): JSX.Element {
   return (
     <div>
       <Helmet>
@@ -101,11 +104,16 @@ function MainPage({offers}: MainPageProps): JSX.Element {
               <div className="cities__places-list places__list tabs__content">
                 <PlacesCardList
                   offers={offers}
+                  activeCard={activeCard}
+                  onSelectCard={onSelectCard}
+                  className={'cities'}
                 />
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map" />
+              <section className="cities__map map">
+                <Map offers={offers} activeCard={activeCard} />
+              </section>
             </div>
           </div>
         </div>

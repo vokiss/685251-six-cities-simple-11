@@ -55,7 +55,6 @@ function PropertyReviewForm (): JSX.Element {
         </p>
         <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
       </div>
-      <p>REVIEW INPUT TEST: {reviewTextValue}</p>
     </form>
   );
 }

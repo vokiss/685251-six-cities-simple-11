@@ -22,8 +22,9 @@ export type Location2 = {
         zoom: number;
     }
 export type Offers = Offer[];
+
 export type Offer = {
-        // city?: City;
+        city?: City;
         previewImage?: string;
         images: string[];
         title: string;
@@ -37,5 +38,7 @@ export type Offer = {
         host?: Host;
         description: string;
         // location?: Location2;
-        id: number;
+        id: string;
+        lat: number;
+        lng: number;
     }
