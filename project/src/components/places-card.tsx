@@ -1,31 +1,35 @@
 import { Offer } from '../types/offers';
-import {useState} from 'react';
 import { Link } from 'react-router-dom';
 
 
 type PlacesCardProps = {
   offer: Offer;
+  activeCard: string;
+  onSelectCard: (id: string) => void;
+  className: string;
 }
 
 function PlacesCard (props: PlacesCardProps): JSX.Element {
-  const {offer} = props;
+  const {offer, activeCard, onSelectCard, className} = props;
   const {previewImage, price, title, type, rating, isPremium, id} = offer;
   const ratingStyle = {
     width: `${rating * 20}%`,
   };
-  const [activePlaceCard, setActivePlaceCard] = useState(0);
-  const mouseOverHandler = () => setActivePlaceCard(id);
+  const mouseOverHandler = () => onSelectCard(id);
+  const mouseLeaveHandler = () => onSelectCard('');
+  const onClickHandler = () => window.scrollTo(0,0);
 
   return (
-    <article className="cities__card place-card"
+    <article className={`${className}__card place-card`}
       onMouseOver={mouseOverHandler}
+      onMouseLeave={mouseLeaveHandler}
     >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>)}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${activePlaceCard}`}>
+        <Link to={`/offer/${activeCard}`} onClick={onClickHandler}>
           <img className="place-card__image" src={previewImage} width={260} height={200} alt="Place" />
         </Link>
       </div>

@@ -3,13 +3,16 @@ import PlacesCard from '../places-card';
 
 type PlacesCardListProps = {
   offers: Offers;
+  activeCard: string;
+  onSelectCard: (id:string) => void;
+  className: string;
 }
 
 function PlacesCardList(props: PlacesCardListProps): JSX.Element {
-  const {offers} = props;
+  const {offers, activeCard, onSelectCard, className} = props;
   return (
     <div className="cities__places-list places__list tabs__content">
-      {offers.map((offer) => <PlacesCard key={offer.id} offer={offer} />)}
+      {offers.map((offer) => <PlacesCard key={offer.id} offer={offer} activeCard={activeCard} onSelectCard={onSelectCard} className={className} />)}
     </div>
   );
 }
