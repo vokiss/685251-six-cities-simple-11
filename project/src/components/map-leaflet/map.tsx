@@ -3,8 +3,10 @@ import useMap from '../../hooks/useMap';
 import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Offers } from '../../types/offers';
+import { City } from '../../const';
 
 type MapProps = {
+  city: City;
   offers: Offers;
   activeCard: string | undefined;
 };
@@ -26,17 +28,22 @@ const DEFAULT_CITY = {
   lng: 4.88969
 };
 
-function Map({offers, activeCard}: MapProps): JSX.Element {
+function Map({city, offers, activeCard}: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, DEFAULT_CITY);
 
   useEffect(() => {
+    const markers: Marker[] = [];
+
     if (map) {
+      map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
       offers.forEach((offer) => {
         const marker = new Marker({
           lat: offer.lat,
           lng: offer.lng
         });
+
+        markers.push(marker);
 
         marker
           .setIcon(activeCard !== undefined && offer.id === activeCard
@@ -45,7 +52,9 @@ function Map({offers, activeCard}: MapProps): JSX.Element {
           )
           .addTo(map);
       });
-    }}, [map, offers, activeCard]);
+    }
+    return () => markers.forEach((marker) => marker.remove());
+  }, [map, offers, activeCard, city]);
 
   return <div style={{ height: '100%' }} ref={mapRef} />;
 }
