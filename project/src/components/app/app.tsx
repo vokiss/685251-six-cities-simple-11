@@ -24,7 +24,6 @@ function App({offers}: AppProps): JSX.Element {
             path={AppRoute.Main}
             element={
               <MainPage
-                offers = {offers}
                 activeCard={activeCard}
                 onSelectCard={setActiveCard}
               />

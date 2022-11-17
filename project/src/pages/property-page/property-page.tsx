@@ -9,6 +9,7 @@ import PropertyPhoto from '../../components/property-gallery-photo/property-gall
 import PlacesCardList from '../../components/places-card-list/places-card-list';
 import PropertyReviewForm from '../../components/property-reviews/property-review-form';
 import { reviews } from '../../mocks/reviews';
+import { useAppSelector } from '../../hooks';
 
 type PropertyPageProps = {
   offers: Offers;
@@ -17,6 +18,7 @@ type PropertyPageProps = {
 }
 
 function PropertyPage(props: PropertyPageProps): JSX.Element {
+  const currentCity = useAppSelector((state) => state.city);
   const {offers, activeCard, onSelectCard} = props;
   const routePath = useParams();
   const currentOffer = offers.find((offer) => offer.id === routePath.id);
@@ -143,7 +145,7 @@ function PropertyPage(props: PropertyPageProps): JSX.Element {
               </div>
             </div>
             <section className="property__map map">
-              <Map offers={otherOffers} activeCard={activeCard} />
+              <Map city={currentCity} offers={otherOffers} activeCard={activeCard} />
             </section>
           </section>
           <div className="container">

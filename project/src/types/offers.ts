@@ -1,3 +1,5 @@
+import { CityName } from '../const';
+
 export type Location = {
         latitude: number;
         longitude: number;
@@ -5,8 +7,12 @@ export type Location = {
     }
 
 export type City = {
-        name: string;
-        location: Location;
+      name: CityName;
+      location: {
+        latitude: number;
+          longitude: number;
+          zoom: number;
+      };
     }
 
 export type Host = {
@@ -24,7 +30,7 @@ export type Location2 = {
 export type Offers = Offer[];
 
 export type Offer = {
-        city?: City;
+        city: City;
         previewImage?: string;
         images: string[];
         title: string;
