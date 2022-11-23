@@ -30,21 +30,19 @@ export type Location2 = {
 export type Offers = Offer[];
 
 export type Offer = {
-        city: City;
-        previewImage?: string;
-        images: string[];
-        title: string;
-        isPremium: boolean;
-        rating: number;
-        type: string;
-        bedrooms: number;
-        maxAdults: number;
-        price: number;
-        goods: string[];
-        host?: Host;
-        description: string;
-        // location?: Location2;
-        id: string;
-        lat: number;
-        lng: number;
+  id: number;
+  city: City;
+  location: Location;
+  host: Host;
+  bedrooms: number;
+  goods: string[];
+  images: string[];
+  isPremium: boolean;
+  maxAdults: number;
+  previewImage: string;
+  price: number;
+  rating: number;
+  title: string;
+  type: string;
+  description: string;
     }

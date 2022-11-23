@@ -1,6 +1,5 @@
 import Logo from '../../components/logo/logo';
 import {Helmet} from 'react-helmet-async';
-import { Offers } from '../../types/offers';
 import PropertyReviews from '../../components/property-reviews/property-reviews';
 import Map from '../../components/map-leaflet/map';
 import { Navigate, useParams } from 'react-router-dom';
@@ -12,17 +11,17 @@ import { reviews } from '../../mocks/reviews';
 import { useAppSelector } from '../../hooks';
 
 type PropertyPageProps = {
-  offers: Offers;
-  activeCard: string;
-  onSelectCard: (id: string) => void;
+  activeCard: number;
+  onSelectCard: (id: number) => void;
 }
 
 function PropertyPage(props: PropertyPageProps): JSX.Element {
+  const loadedOffers = useAppSelector((store) => store.offers);
   const currentCity = useAppSelector((state) => state.city);
-  const {offers, activeCard, onSelectCard} = props;
+  const { activeCard, onSelectCard} = props;
   const routePath = useParams();
-  const currentOffer = offers.find((offer) => offer.id === routePath.id);
-  const otherOffers = offers.filter((offer) => offer.id !== routePath.id);
+  const currentOffer = loadedOffers.find((offer) => offer.id === Number(routePath.id));
+  const otherOffers = loadedOffers.filter((offer) => offer.id !== Number(routePath.id));
 
   if (!currentOffer) {
     return <Navigate to={AppRoute.NotFound} />;
