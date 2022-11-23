@@ -10,8 +10,8 @@ import { Offers } from '../../types/offers';
 import { getSortType } from '../../selector';
 
 type MainPageProps = {
-  activeCard: string;
-  onSelectCard: (id: string) => void;
+  activeCard: number;
+  onSelectCard: (id: number) => void;
 }
 
 function MainPage({activeCard, onSelectCard}: MainPageProps): JSX.Element {

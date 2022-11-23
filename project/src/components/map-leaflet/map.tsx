@@ -8,7 +8,7 @@ import { City } from '../../const';
 type MapProps = {
   city: City;
   offers: Offers;
-  activeCard: string | undefined;
+  activeCard: number | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -39,8 +39,8 @@ function Map({city, offers, activeCard}: MapProps): JSX.Element {
       map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
       offers.forEach((offer) => {
         const marker = new Marker({
-          lat: offer.lat,
-          lng: offer.lng
+          lat: offer.location.latitude,
+          lng: offer.location.longitude
         });
 
         markers.push(marker);

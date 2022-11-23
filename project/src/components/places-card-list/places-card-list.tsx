@@ -3,8 +3,8 @@ import PlacesCard from '../places-card';
 
 type PlacesCardListProps = {
   offers: Offers;
-  activeCard: string;
-  onSelectCard: (id:string) => void;
+  activeCard: number;
+  onSelectCard: (id:number) => void;
   className: string;
 }
 

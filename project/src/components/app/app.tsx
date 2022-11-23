@@ -6,15 +6,20 @@ import MainPage from '../../pages/main-page/main-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import Page404 from '../404/404';
 import PrivateRoute from '../private-route/private-route';
-import { Offers } from '../../types/offers';
 import { useState } from 'react';
+import {useAppSelector} from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
-type AppProps = {
-  offers: Offers;
-}
+function App(): JSX.Element {
+  const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
 
-function App({offers}: AppProps): JSX.Element {
-  const [activeCard, setActiveCard] = useState('');
+  const [activeCard, setActiveCard] = useState(1);
+
+  if (isOffersLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <HelmetProvider>
@@ -40,7 +45,7 @@ function App({offers}: AppProps): JSX.Element {
                 authorizationStatus={AuthorizationStatus.Auth}
               >
                 <PropertyPage
-                  offers={offers} activeCard={activeCard} onSelectCard={setActiveCard}
+                  activeCard={activeCard} onSelectCard={setActiveCard}
                 />
               </PrivateRoute>
             }
