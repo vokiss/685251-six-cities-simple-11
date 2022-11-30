@@ -1,6 +1,6 @@
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute} from '../../const';
 import LoginPage from '../../pages/login-page/login-page';
 import MainPage from '../../pages/main-page/main-page';
 import PropertyPage from '../../pages/property-page/property-page';
@@ -41,9 +41,7 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Room}
             element={
-              <PrivateRoute
-                authorizationStatus={AuthorizationStatus.Auth}
-              >
+              <PrivateRoute>
                 <PropertyPage
                   activeCard={activeCard} onSelectCard={setActiveCard}
                 />

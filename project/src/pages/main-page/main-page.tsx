@@ -8,6 +8,7 @@ import SortForm from '../../components/sort-form/sort-form';
 import { SortTypes } from '../../const';
 import { Offers } from '../../types/offers';
 import { getSortType } from '../../selector';
+import Header from '../../components/header/header';
 
 type MainPageProps = {
   activeCard: number;
@@ -50,21 +51,7 @@ function MainPage({activeCard, onSelectCard}: MainPageProps): JSX.Element {
             <div className="header__left">
               <Logo />
             </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <div className="header__nav-profile">
-                    <div className="header__avatar-wrapper user__avatar-wrapper" />
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                  </div>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="/">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
+            <Header />
           </div>
         </div>
       </header>
