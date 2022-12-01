@@ -7,7 +7,7 @@ export enum AppRoute {
 
 export enum APIRoute {
   Hotels = '/hotels',
-  Comments = '/comments/',
+  Comments = '/comments',
   Login = '/login',
   Logout = '/logout',
 }
@@ -94,3 +94,7 @@ export const cities: City[] = [
 ];
 
 export const START_CITY = cities[0];
+
+export const SELECT_CARD_DEFAULT = 1;
+
+export const TOKEN_DEFAULT = 'x-token';

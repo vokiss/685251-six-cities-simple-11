@@ -1,5 +1,6 @@
 import { Offer } from '../types/offers';
 import { Link } from 'react-router-dom';
+import { SELECT_CARD_DEFAULT } from '../const';
 
 
 type PlacesCardProps = {
@@ -16,7 +17,7 @@ function PlacesCard (props: PlacesCardProps): JSX.Element {
     width: `${rating * 20}%`,
   };
   const mouseOverHandler = () => onSelectCard(id);
-  const mouseLeaveHandler = () => onSelectCard(1);
+  const mouseLeaveHandler = () => onSelectCard(SELECT_CARD_DEFAULT);
   const onClickHandler = () => window.scrollTo(0,0);
 
   return (
