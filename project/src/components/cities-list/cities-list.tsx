@@ -1,16 +1,14 @@
 import { cities, City, CityName } from '../../const';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import {changeCityOffers} from '../../store/action';
 import {AppRoute} from '../../const';
 import { Link } from 'react-router-dom';
 import { MouseEvent } from 'react';
+import { getCity } from '../../selector';
 
-type CitiesListProps = {
-  currentCity: City;
-}
-
-const CitiesList = ({currentCity}: CitiesListProps):JSX.Element => {
+const CitiesList = ():JSX.Element => {
   const dispatch = useAppDispatch();
+  const currentCity = useAppSelector(getCity);
 
   const handleCityChange = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();

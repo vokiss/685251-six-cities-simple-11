@@ -1,7 +1,12 @@
 import Logo from '../../components/logo/logo';
 import {Helmet} from 'react-helmet-async';
+import Header from '../../components/header/header';
+import CitiesList from '../../components/cities-list/cities-list';
+import { getCity } from '../../selector';
+import { useAppSelector } from '../../hooks';
 
 function MainPageEmpty(): JSX.Element {
+
   return (
     <div>
       <Helmet>
@@ -17,21 +22,7 @@ function MainPageEmpty(): JSX.Element {
               <div className="header__left">
                 <Logo />
               </div>
-              <nav className="header__nav">
-                <ul className="header__nav-list">
-                  <li className="header__nav-item user">
-                    <div className="header__nav-profile">
-                      <div className="header__avatar-wrapper user__avatar-wrapper" />
-                      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    </div>
-                  </li>
-                  <li className="header__nav-item">
-                    <a className="header__nav-link" href="/">
-                      <span className="header__signout">Sign out</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+              <Header />
             </div>
           </div>
         </header>
@@ -39,38 +30,7 @@ function MainPageEmpty(): JSX.Element {
           <h1 className="visually-hidden">Cities</h1>
           <div className="tabs">
             <section className="locations container">
-              <ul className="locations__list tabs__list">
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="/">
-                    <span>Paris</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="/">
-                    <span>Cologne</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="/">
-                    <span>Brussels</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="/">
-                    <span>Amsterdam</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item" href="/">
-                    <span>Hamburg</span>
-                  </a>
-                </li>
-                <li className="locations__item">
-                  <a className="locations__item-link tabs__item tabs__item--active" href="/">
-                    <span>Dusseldorf</span>
-                  </a>
-                </li>
-              </ul>
+              <CitiesList />
             </section>
           </div>
           <div className="cities">
@@ -78,7 +38,7 @@ function MainPageEmpty(): JSX.Element {
               <section className="cities__no-places">
                 <div className="cities__status-wrapper tabs__content">
                   <b className="cities__status">No places to stay available</b>
-                  <p className="cities__status-description">We could not find any property available at the moment in Dusseldorf</p>
+                  <p className="cities__status-description">We could not find any property available at the moment in {useAppSelector(getCity).name}</p>
                 </div>
               </section>
               <div className="cities__right-section" />

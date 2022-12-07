@@ -9,6 +9,7 @@ import PrivateRoute from '../private-route/private-route';
 import { useState } from 'react';
 import {useAppSelector} from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import MainPageEmpty from '../../pages/main-page/main-page-empty';
 
 function App(): JSX.Element {
   const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
@@ -51,6 +52,10 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.NotFound}
             element={<Page404/>}
+          />
+          <Route
+            path={AppRoute.MainEmpty}
+            element={<MainPageEmpty />}
           />
         </Routes>
       </BrowserRouter>
