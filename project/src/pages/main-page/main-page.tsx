@@ -7,7 +7,7 @@ import CitiesList from '../../components/cities-list/cities-list';
 import SortForm from '../../components/sort-form/sort-form';
 import { SortTypes } from '../../const';
 import { Offers } from '../../types/offers';
-import { getSortType } from '../../selector';
+import { getCity, getSortType } from '../../selector';
 import Header from '../../components/header/header';
 
 type MainPageProps = {
@@ -16,7 +16,7 @@ type MainPageProps = {
 }
 
 function MainPage({activeCard, onSelectCard}: MainPageProps): JSX.Element {
-  const currentCity = useAppSelector((state) => state.city);
+  const currentCity = useAppSelector(getCity);
   const offersRedux = useAppSelector((state) => state.offers);
 
   const getSortedOffers = (items: Offers, sortType: string) => {
@@ -59,7 +59,7 @@ function MainPage({activeCard, onSelectCard}: MainPageProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <CitiesList currentCity={currentCity} />
+            <CitiesList />
           </section>
         </div>
         <div className="cities">

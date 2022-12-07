@@ -3,13 +3,16 @@ import {Helmet} from 'react-helmet-async';
 import PropertyReviews from '../../components/property-reviews/property-reviews';
 import Map from '../../components/map-leaflet/map';
 import { Navigate, useParams } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import PropertyPhoto from '../../components/property-gallery-photo/property-gallery-photo';
 import PlacesCardList from '../../components/places-card-list/places-card-list';
 import PropertyReviewForm from '../../components/property-reviews/property-review-form';
-import { reviews } from '../../mocks/reviews';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import Header from '../../components/header/header';
+import { fetchCurrentOfferAction } from '../../store/api-action';
+import { useEffect } from 'react';
+import LoadingScreen from '../loading-screen/loading-screen';
+import { getCurrentOfferData } from '../../selector';
 
 type PropertyPageProps = {
   activeCard: number;
@@ -17,23 +20,34 @@ type PropertyPageProps = {
 }
 
 function PropertyPage(props: PropertyPageProps): JSX.Element {
-  const loadedOffers = useAppSelector((store) => store.offers);
-  const currentCity = useAppSelector((state) => state.city);
+  const dispatch = useAppDispatch();
+  const { id } = useParams();
   const { activeCard, onSelectCard} = props;
-  const routePath = useParams();
-  const currentOffer = loadedOffers.find((offer) => offer.id === Number(routePath.id));
-  const otherOffers = loadedOffers.filter((offer) => offer.id !== Number(routePath.id));
 
-  if (!currentOffer) {
+  const isLogged = useAppSelector((state) => state.authorizationStatus ) === AuthorizationStatus.Auth;
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchCurrentOfferAction(id));
+    }
+  }, [id, dispatch]);
+
+  const { offer, nearbyOffers, isLoading, reviews } = useAppSelector(getCurrentOfferData);
+  const currentCity = useAppSelector((state) => state.city);
+
+  const otherOffers = nearbyOffers;
+
+  if (isLoading) { return <LoadingScreen />; }
+
+  if (!offer) {
     return <Navigate to={AppRoute.NotFound} />;
   }
+
   const { images, price, title, type, rating, isPremium, bedrooms, maxAdults, goods,
-    description, host} = currentOffer;
+    description, host} = offer;
   const ratingStyle = {
     width: `${rating * 20}%`,
   };
-
-  const currentReviews = reviews.filter((review) => review.offerId === routePath.id);
 
   return (
     <div>
@@ -107,9 +121,9 @@ function PropertyPage(props: PropertyPageProps): JSX.Element {
                       <img className="property__avatar user__avatar" src={host?.avatarUrl} width={74} height={74} alt="Host avatar" />
                     </div>
                     <span className="property__user-name">
-                      {host?.name}
+                      {host.name}
                     </span>
-                    {host?.isPro && (
+                    {host.isPro && (
                       <span className="property__user-status">
                     Pro
                       </span>)}
@@ -124,9 +138,9 @@ function PropertyPage(props: PropertyPageProps): JSX.Element {
                   </div>
                 </div>
                 <section className="property__reviews reviews">
-                  <h2 className="reviews__title">Reviews · <span className="reviews__amount">{currentReviews.length}</span></h2>
-                  <PropertyReviews reviews={currentReviews}/>
-                  <PropertyReviewForm />
+                  <h2 className="reviews__title">Reviews · <span className="reviews__amount">{reviews.length}</span></h2>
+                  <PropertyReviews reviews={reviews}/>
+                  {isLogged && <PropertyReviewForm id={offer.id} />}
                 </section>
               </div>
             </div>

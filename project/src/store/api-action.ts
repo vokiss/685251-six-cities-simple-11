@@ -1,12 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
 import { APIRoute, AuthorizationStatus } from '../const';
-import { Offers } from '../types/offers';
+import { Offers, Offer} from '../types/offers';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import {AppDispatch, State} from '../types/state';
-import { loadOffersServer, loadUserData, requireAuthorization, setOffersDataLoadingStatus } from './action';
+import { loadCurrentOfferData, loadOffersServer, loadUserData, requireAuthorization, sendReview, setCurrentOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import {saveToken, dropToken} from '../services/token';
+import { Reviews, UserReview } from '../types/review';
 
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
@@ -20,6 +21,38 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
     const {data} = await api.get<Offers>(APIRoute.Hotels);
     dispatch(setOffersDataLoadingStatus(false));
     dispatch(loadOffersServer(data));
+  },
+);
+
+export const fetchCurrentOfferAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchCurrentOfferAction',
+  async (id, {dispatch, extra: api}) => {
+    dispatch(setCurrentOfferDataLoadingStatus(true));
+    const { data: offerData } = await api.get<Offer>(`${APIRoute.Hotels}/${id}`);
+    const { data: reviewsData } = await api.get<Reviews>(`${APIRoute.Comments}/${id}`);
+    const { data: nearbyOffersData } = await api.get<Offers>(`${APIRoute.Hotels}/${id}/nearby`);
+    dispatch(loadCurrentOfferData({
+      offer: offerData,
+      reviews: reviewsData,
+      nearbyOffers: nearbyOffersData,
+      isLoading: false
+    }));
+  },
+);
+
+export const sendReviewAction = createAsyncThunk<void, UserReview, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/sendReview',
+  async ({ id, rating, comment }, { dispatch, extra: api }) => {
+    const { data } = await api.post<Reviews>(`${APIRoute.Comments}/${id}`, { comment, rating });
+    dispatch(sendReview(data));
   },
 );
 

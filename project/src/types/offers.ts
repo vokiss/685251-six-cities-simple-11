@@ -1,4 +1,5 @@
 import { CityName } from '../const';
+import { Reviews } from './review';
 
 export type Location = {
         latitude: number;
@@ -46,3 +47,10 @@ export type Offer = {
   type: string;
   description: string;
     }
+
+export type CurrentOfferData = {
+      offer: Offer | null;
+      reviews: Reviews;
+      nearbyOffers: Offers;
+      isLoading: boolean;
+    };

@@ -1,59 +1,45 @@
-import {useState, SetStateAction} from 'react';
+import {useState, ChangeEvent, FormEvent} from 'react';
+import { useAppDispatch } from '../../hooks';
+import { sendReviewAction } from '../../store/api-action';
+import StarsRatingInput from '../stars-rating-input/stars-rating-input';
 
-function PropertyReviewForm (): JSX.Element {
-  const [reviewTextValue, setReviewTextValue] = useState('');
+type PropertyReviewProps = {
+  id: number;
+}
 
-  const onChangeTextHandler = (evt: { target: { value: SetStateAction<string> } }) => setReviewTextValue(evt.target.value);
+function PropertyReviewForm ({id}: PropertyReviewProps): JSX.Element {
+  const [reviewData, setReviewData] = useState({
+    id: String(id),
+    comment: '',
+    rating: 0
+  });
+
+  const dispatch = useAppDispatch();
+
+  const onChangeReviewHandler = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => setReviewData({ ...reviewData, [evt.target.name]: evt.target.value });
+
+  const onSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    dispatch(sendReviewAction(reviewData));
+  };
 
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form onSubmit={onSubmitHandler} className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <div className="reviews__rating-form form__rating">
-        <input className="form__rating-input visually-hidden" name="rating" defaultValue={5} id="5-stars" type="radio" />
-        <label htmlFor="5-stars" className="reviews__rating-label form__rating-label" title="perfect">
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
-        <input className="form__rating-input visually-hidden" name="rating" defaultValue={4} id="4-stars" type="radio" />
-        <label htmlFor="4-stars" className="reviews__rating-label form__rating-label" title="good">
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
-        <input className="form__rating-input visually-hidden" name="rating" defaultValue={3} id="3-stars" type="radio" />
-        <label htmlFor="3-stars" className="reviews__rating-label form__rating-label" title="not bad">
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
-        <input className="form__rating-input visually-hidden" name="rating" defaultValue={2} id="2-stars" type="radio" />
-        <label htmlFor="2-stars" className="reviews__rating-label form__rating-label" title="badly">
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
-        <input className="form__rating-input visually-hidden" name="rating" defaultValue={1} id="1-star" type="radio" />
-        <label htmlFor="1-star" className="reviews__rating-label form__rating-label" title="terribly">
-          <svg className="form__star-image" width={37} height={33}>
-            <use xlinkHref="#icon-star" />
-          </svg>
-        </label>
-      </div>
+      <StarsRatingInput onChangeHandler={onChangeReviewHandler}/>
       <textarea
-        value={reviewTextValue}
-        onChange={onChangeTextHandler}
+        value={reviewData.comment}
+        onChange={onChangeReviewHandler}
         className="reviews__textarea form__textarea"
         id="review"
-        name="review"
-        placeholder={`Tell how was your stay, what you like and what can be improved${reviewTextValue}`}
-        defaultValue={''}
+        name="comment"
+        placeholder={'Tell how was your stay, what you like and what can be improved'}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
               To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit">Submit</button>
       </div>
     </form>
   );

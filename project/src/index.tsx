@@ -10,7 +10,6 @@ import 'react-toastify/dist/ReactToastify.css';
 store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
 
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );

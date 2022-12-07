@@ -1,5 +1,14 @@
+export const ratingTitles = [
+  'perfect',
+  'good',
+  'not bad',
+  'badly',
+  'terribly'
+];
+
 export enum AppRoute {
   Main = '/',
+  MainEmpty = '/no-offers',
   Login = '/login',
   Room = '/offer/:id',
   NotFound = '*'
@@ -9,7 +18,7 @@ export enum APIRoute {
   Hotels = '/hotels',
   Comments = '/comments',
   Login = '/login',
-  Logout = '/logout',
+  Logout = '/logout'
 }
 
 export enum AuthorizationStatus {
