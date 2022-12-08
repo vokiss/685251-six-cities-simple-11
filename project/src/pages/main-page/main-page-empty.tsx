@@ -2,8 +2,8 @@ import Logo from '../../components/logo/logo';
 import {Helmet} from 'react-helmet-async';
 import Header from '../../components/header/header';
 import CitiesList from '../../components/cities-list/cities-list';
-import { getCity } from '../../selector';
 import { useAppSelector } from '../../hooks';
+import { getCity } from '../../store/app-process/selector';
 
 function MainPageEmpty(): JSX.Element {
 

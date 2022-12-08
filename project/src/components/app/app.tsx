@@ -6,15 +6,13 @@ import MainPage from '../../pages/main-page/main-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import Page404 from '../404/404';
 import PrivateRoute from '../private-route/private-route';
-import { useState } from 'react';
 import {useAppSelector} from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import MainPageEmpty from '../../pages/main-page/main-page-empty';
+import { getOffersIsLoading } from '../../store/data-process/selector';
 
 function App(): JSX.Element {
-  const isOffersLoading = useAppSelector((state) => state.isOffersLoading);
-
-  const [activeCard, setActiveCard] = useState(1);
+  const isOffersLoading = useAppSelector(getOffersIsLoading);
 
   if (isOffersLoading) {
     return (
@@ -29,10 +27,7 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Main}
             element={
-              <MainPage
-                activeCard={activeCard}
-                onSelectCard={setActiveCard}
-              />
+              <MainPage />
             }
           />
           <Route
@@ -43,9 +38,7 @@ function App(): JSX.Element {
             path={AppRoute.Room}
             element={
               <PrivateRoute>
-                <PropertyPage
-                  activeCard={activeCard} onSelectCard={setActiveCard}
-                />
+                <PropertyPage />
               </PrivateRoute>
             }
           />

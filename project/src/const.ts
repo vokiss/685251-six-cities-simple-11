@@ -6,6 +6,12 @@ export const ratingTitles = [
   'terribly'
 ];
 
+export enum NameSpace {
+  Data = 'DATA',
+  App = 'APP',
+  User = 'USER',
+}
+
 export enum AppRoute {
   Main = '/',
   MainEmpty = '/no-offers',

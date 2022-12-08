@@ -4,11 +4,12 @@ import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Offers } from '../../types/offers';
 import { City } from '../../const';
+import { useAppSelector } from '../../hooks';
+import { getActiveCard } from '../../store/app-process/selector';
 
 type MapProps = {
   city: City;
   offers: Offers;
-  activeCard: number | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -28,9 +29,10 @@ const DEFAULT_CITY = {
   lng: 4.88969
 };
 
-function Map({city, offers, activeCard}: MapProps): JSX.Element {
+function Map({city, offers}: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, DEFAULT_CITY);
+  const activeCard = useAppSelector(getActiveCard);
 
   useEffect(() => {
     const markers: Marker[] = [];
