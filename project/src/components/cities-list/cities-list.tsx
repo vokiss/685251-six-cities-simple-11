@@ -1,10 +1,10 @@
 import { cities, City, CityName } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import {changeCityOffers} from '../../store/action';
 import {AppRoute} from '../../const';
 import { Link } from 'react-router-dom';
 import { MouseEvent } from 'react';
-import { getCity } from '../../selector';
+import { getCity } from '../../store/app-process/selector';
+import { changeCityOffers } from '../../store/app-process/app-process';
 
 const CitiesList = ():JSX.Element => {
   const dispatch = useAppDispatch();

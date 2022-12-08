@@ -51,6 +51,7 @@ export type Offer = {
 export type CurrentOfferData = {
       offer: Offer | null;
       reviews: Reviews;
+      reviewsIsLoading: boolean;
       nearbyOffers: Offers;
       isLoading: boolean;
     };

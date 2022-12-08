@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { SortTypes } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getSortType } from '../../selector';
-import { changeSortType } from '../../store/action';
-
+import { changeSortType } from '../../store/app-process/app-process';
+import { getSortType } from '../../store/app-process/selector';
 
 function SortForm(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -12,7 +11,7 @@ function SortForm(): JSX.Element {
 
   const onSortListClickHandler = () => setOpenedState(!isOpened);
 
-  const onSortTypeChangeHandler = (type: string) => {
+  const onSortTypeChangeHandler = (type: SortTypes) => {
     dispatch(changeSortType(type));
     setOpenedState(false);
   };

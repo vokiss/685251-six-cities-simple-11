@@ -6,6 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { loginAction } from '../../store/api-action';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
+import { getCity } from '../../store/app-process/selector';
 
 function LoginPage(): JSX.Element {
   const [authData, setAuthData] = useState({
@@ -15,7 +16,7 @@ function LoginPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const cityName = useAppSelector((state) => state.city.name);
+  const cityName = useAppSelector(getCity).name;
 
   const onSubmitHandler = (evt: FormEvent) => {
     evt.preventDefault();

@@ -7,17 +7,13 @@ import CitiesList from '../../components/cities-list/cities-list';
 import SortForm from '../../components/sort-form/sort-form';
 import { SortTypes } from '../../const';
 import { Offers } from '../../types/offers';
-import { getCity, getSortType } from '../../selector';
 import Header from '../../components/header/header';
+import { getOffersData } from '../../store/data-process/selector';
+import { getCity, getSortType } from '../../store/app-process/selector';
 
-type MainPageProps = {
-  activeCard: number;
-  onSelectCard: (id: number) => void;
-}
-
-function MainPage({activeCard, onSelectCard}: MainPageProps): JSX.Element {
+function MainPage(): JSX.Element {
   const currentCity = useAppSelector(getCity);
-  const offersRedux = useAppSelector((state) => state.offers);
+  const offersRedux = useAppSelector(getOffersData);
 
   const getSortedOffers = (items: Offers, sortType: string) => {
     switch (sortType) {
@@ -71,15 +67,13 @@ function MainPage({activeCard, onSelectCard}: MainPageProps): JSX.Element {
               <div className="cities__places-list places__list tabs__content">
                 <PlacesCardList
                   offers={cityOffers}
-                  activeCard={activeCard}
-                  onSelectCard={onSelectCard}
                   className={'cities'}
                 />
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city={currentCity} offers={cityOffers} activeCard={activeCard} />
+                <Map city={currentCity} offers={cityOffers} />
               </section>
             </div>
           </div>

@@ -1,23 +1,26 @@
 import { Offer } from '../types/offers';
-import { Link } from 'react-router-dom';
-import { SELECT_CARD_DEFAULT } from '../const';
-
+import { generatePath, Link } from 'react-router-dom';
+import { AppRoute, SELECT_CARD_DEFAULT } from '../const';
+import { useAppDispatch } from '../hooks';
+import { setActiveCard } from '../store/app-process/app-process';
 
 type PlacesCardProps = {
   offer: Offer;
-  activeCard: number;
-  onSelectCard: (id: number) => void;
   className: string;
 }
 
 function PlacesCard (props: PlacesCardProps): JSX.Element {
-  const {offer, activeCard, onSelectCard, className} = props;
+  const {offer, className} = props;
   const {previewImage, price, title, type, rating, isPremium, id} = offer;
   const ratingStyle = {
     width: `${rating * 20}%`,
   };
-  const mouseOverHandler = () => onSelectCard(id);
-  const mouseLeaveHandler = () => onSelectCard(SELECT_CARD_DEFAULT);
+
+  const dispatch = useAppDispatch();
+  const linkRoute = generatePath(AppRoute.Room, {id: String(id)});
+
+  const mouseOverHandler = () => dispatch(setActiveCard(id));
+  const mouseLeaveHandler = () => dispatch(setActiveCard(SELECT_CARD_DEFAULT));
   const onClickHandler = () => window.scrollTo(0,0);
 
   return (
@@ -30,7 +33,7 @@ function PlacesCard (props: PlacesCardProps): JSX.Element {
           <span>Premium</span>
         </div>)}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${activeCard}`} onClick={onClickHandler}>
+        <Link to={linkRoute} onClick={onClickHandler}>
           <img className="place-card__image" src={previewImage} width={260} height={200} alt="Place" />
         </Link>
       </div>

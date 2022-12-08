@@ -12,19 +12,15 @@ import Header from '../../components/header/header';
 import { fetchCurrentOfferAction } from '../../store/api-action';
 import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { getCurrentOfferData } from '../../selector';
+import { getAuthStatus } from '../../store/user-process/selector';
+import { getCurrentOfferData } from '../../store/data-process/selector';
+import { getCity } from '../../store/app-process/selector';
 
-type PropertyPageProps = {
-  activeCard: number;
-  onSelectCard: (id: number) => void;
-}
-
-function PropertyPage(props: PropertyPageProps): JSX.Element {
+function PropertyPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  const { activeCard, onSelectCard} = props;
 
-  const isLogged = useAppSelector((state) => state.authorizationStatus ) === AuthorizationStatus.Auth;
+  const isLogged = useAppSelector(getAuthStatus) === AuthorizationStatus.Auth;
 
   useEffect(() => {
     if (id) {
@@ -33,7 +29,7 @@ function PropertyPage(props: PropertyPageProps): JSX.Element {
   }, [id, dispatch]);
 
   const { offer, nearbyOffers, isLoading, reviews } = useAppSelector(getCurrentOfferData);
-  const currentCity = useAppSelector((state) => state.city);
+  const currentCity = useAppSelector(getCity);
 
   const otherOffers = nearbyOffers;
 
@@ -145,14 +141,14 @@ function PropertyPage(props: PropertyPageProps): JSX.Element {
               </div>
             </div>
             <section className="property__map map">
-              <Map city={currentCity} offers={otherOffers} activeCard={activeCard} />
+              <Map city={currentCity} offers={otherOffers} />
             </section>
           </section>
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
-                <PlacesCardList offers={otherOffers} activeCard={activeCard} onSelectCard={onSelectCard} className={'near-places'}/>
+                <PlacesCardList offers={otherOffers} className={'near-places'}/>
               </div>
             </section>
           </div>
