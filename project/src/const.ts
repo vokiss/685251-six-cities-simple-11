@@ -109,7 +109,9 @@ export const cities: City[] = [
 ];
 
 export const START_CITY = cities[0];
-
 export const SELECT_CARD_DEFAULT = 1;
-
 export const TOKEN_DEFAULT = 'x-token';
+export const MAX_OFFER_IMAGES_COUNT = 6;
+export const MAX_REVIEW_COUNT = 10;
+export const MIN_REVIEW_LENGTH = 50;
+export const MAX_REVIEW_LENGTH = 300;

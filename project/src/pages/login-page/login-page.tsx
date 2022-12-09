@@ -4,9 +4,11 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginAction } from '../../store/api-action';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { getCity } from '../../store/app-process/selector';
+import { getAuthStatus } from '../../store/user-process/selector';
+import { validPassword } from '../../services/utils';
 
 function LoginPage(): JSX.Element {
   const [authData, setAuthData] = useState({
@@ -17,6 +19,11 @@ function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cityName = useAppSelector(getCity).name;
+  const isLogged = useAppSelector(getAuthStatus) === AuthorizationStatus.Auth;
+
+  if (isLogged) {
+    navigate(AppRoute.Main);
+  }
 
   const onSubmitHandler = (evt: FormEvent) => {
     evt.preventDefault();
@@ -25,7 +32,6 @@ function LoginPage(): JSX.Element {
   };
 
   const onChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => setAuthData({ ...authData, [evt.target.name]: evt.target.value });
-
 
   return (
     <div>
@@ -63,7 +69,7 @@ function LoginPage(): JSX.Element {
                     type="email"
                     name="email"
                     placeholder="Email"
-                    required={false}
+                    required
                     onChange={onChangeHandler}
                   />
                 </div>
@@ -75,11 +81,11 @@ function LoginPage(): JSX.Element {
                     type="password"
                     name="password"
                     placeholder="Password"
-                    required={false}
+                    required
                     onChange={onChangeHandler}
                   />
                 </div>
-                <button className="login__submit form__submit button" type="submit">Sign in</button>
+                <button className="login__submit form__submit button" type="submit" disabled={!validPassword.test(authData.password)}>Sign in</button>
               </form>
             </section>
             <section className="locations locations--login locations--current">

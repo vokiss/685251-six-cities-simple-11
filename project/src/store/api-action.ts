@@ -29,11 +29,11 @@ export const fetchCurrentOfferAction = createAsyncThunk<CurrentOfferData, string
     const { data: reviewsData } = await api.get<Reviews>(`${APIRoute.Comments}/${id}`);
     const { data: nearbyOffersData } = await api.get<Offers>(`${APIRoute.Hotels}/${id}/nearby`);
     return {
-      offer: offerData,
       isLoading: false,
       reviews: reviewsData,
       reviewsIsLoading: false,
-      nearbyOffers: nearbyOffersData
+      nearbyOffers: nearbyOffersData,
+      offer: offerData
     };
   },
 );

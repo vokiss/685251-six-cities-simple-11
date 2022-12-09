@@ -3,7 +3,7 @@ import {Helmet} from 'react-helmet-async';
 import PropertyReviews from '../../components/property-reviews/property-reviews';
 import Map from '../../components/map-leaflet/map';
 import { Navigate, useParams } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus, MAX_OFFER_IMAGES_COUNT, MAX_REVIEW_COUNT} from '../../const';
 import PropertyPhoto from '../../components/property-gallery-photo/property-gallery-photo';
 import PlacesCardList from '../../components/places-card-list/places-card-list';
 import PropertyReviewForm from '../../components/property-reviews/property-review-form';
@@ -14,7 +14,6 @@ import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { getAuthStatus } from '../../store/user-process/selector';
 import { getCurrentOfferData } from '../../store/data-process/selector';
-import { getCity } from '../../store/app-process/selector';
 
 function PropertyPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -29,9 +28,7 @@ function PropertyPage(): JSX.Element {
   }, [id, dispatch]);
 
   const { offer, nearbyOffers, isLoading, reviews } = useAppSelector(getCurrentOfferData);
-  const currentCity = useAppSelector(getCity);
-
-  const otherOffers = nearbyOffers;
+  const showReviews = reviews.slice(0, MAX_REVIEW_COUNT);
 
   if (isLoading) { return <LoadingScreen />; }
 
@@ -68,7 +65,7 @@ function PropertyPage(): JSX.Element {
           <section className="property">
             <div className="property__gallery-container container">
               <div className="property__gallery">
-                {images.map((image) => <PropertyPhoto key={image} image={image} />)}
+                {images.slice(0, MAX_OFFER_IMAGES_COUNT).map((image) => <PropertyPhoto key={image} image={image} />)}
               </div>
             </div>
             <div className="property__container container">
@@ -134,21 +131,21 @@ function PropertyPage(): JSX.Element {
                   </div>
                 </div>
                 <section className="property__reviews reviews">
-                  <h2 className="reviews__title">Reviews · <span className="reviews__amount">{reviews.length}</span></h2>
-                  <PropertyReviews reviews={reviews}/>
+                  <h2 className="reviews__title">Reviews · <span className="reviews__amount">{showReviews.length}</span></h2>
+                  <PropertyReviews reviews={showReviews}/>
                   {isLogged && <PropertyReviewForm id={offer.id} />}
                 </section>
               </div>
             </div>
             <section className="property__map map">
-              <Map city={currentCity} offers={otherOffers} />
+              <Map offers={[...nearbyOffers, offer]} />
             </section>
           </section>
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <div className="near-places__list places__list">
-                <PlacesCardList offers={otherOffers} className={'near-places'}/>
+                <PlacesCardList offers={nearbyOffers} className={'near-places'}/>
               </div>
             </section>
           </div>

@@ -35,6 +35,7 @@ export const dataProcess = createSlice({
       .addCase(fetchCurrentOfferAction.fulfilled, (state, action) => {
         state.currentOffer = action.payload;
         sortReviews(state.currentOffer.reviews);
+        state.currentOffer.isLoading = false;
       })
       .addCase(sendReviewAction.pending, (state) => {
         state.currentOffer.reviewsIsLoading = true;
