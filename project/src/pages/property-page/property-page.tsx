@@ -3,7 +3,7 @@ import {Helmet} from 'react-helmet-async';
 import PropertyReviews from '../../components/property-reviews/property-reviews';
 import Map from '../../components/map-leaflet/map';
 import { Navigate, useParams } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus, MAX_OFFER_IMAGES_COUNT } from '../../const';
+import { AppRoute, AuthorizationStatus, MAX_OFFER_IMAGES_COUNT, MAX_REVIEW_COUNT} from '../../const';
 import PropertyPhoto from '../../components/property-gallery-photo/property-gallery-photo';
 import PlacesCardList from '../../components/places-card-list/places-card-list';
 import PropertyReviewForm from '../../components/property-reviews/property-review-form';
@@ -28,6 +28,7 @@ function PropertyPage(): JSX.Element {
   }, [id, dispatch]);
 
   const { offer, nearbyOffers, isLoading, reviews } = useAppSelector(getCurrentOfferData);
+  const showReviews = reviews.slice(0, MAX_REVIEW_COUNT);
 
   if (isLoading) { return <LoadingScreen />; }
 
@@ -130,8 +131,8 @@ function PropertyPage(): JSX.Element {
                   </div>
                 </div>
                 <section className="property__reviews reviews">
-                  <h2 className="reviews__title">Reviews · <span className="reviews__amount">{reviews.length}</span></h2>
-                  <PropertyReviews reviews={reviews}/>
+                  <h2 className="reviews__title">Reviews · <span className="reviews__amount">{showReviews.length}</span></h2>
+                  <PropertyReviews reviews={showReviews}/>
                   {isLogged && <PropertyReviewForm id={offer.id} />}
                 </section>
               </div>
