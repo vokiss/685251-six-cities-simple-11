@@ -1,3 +1,4 @@
+import { MAX_REVIEW_COUNT } from '../../const';
 import { Review } from '../../types/review';
 import PropertyReviewItem from './review-item';
 
@@ -9,7 +10,7 @@ function PropertyReviews (props: Reviews): JSX.Element {
   const {reviews} = props;
   return (
     <ul className="reviews__list">
-      {reviews.map((review) => <PropertyReviewItem key={review.id} review={review}/>)}
+      {reviews.slice(0, MAX_REVIEW_COUNT).map((review) => <PropertyReviewItem key={review.id} review={review}/>)}
     </ul>
   );
 }

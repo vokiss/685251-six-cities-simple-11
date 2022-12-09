@@ -5,7 +5,6 @@ import LoginPage from '../../pages/login-page/login-page';
 import MainPage from '../../pages/main-page/main-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import Page404 from '../404/404';
-import PrivateRoute from '../private-route/private-route';
 import {useAppSelector} from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 import MainPageEmpty from '../../pages/main-page/main-page-empty';
@@ -37,9 +36,7 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Room}
             element={
-              <PrivateRoute>
-                <PropertyPage />
-              </PrivateRoute>
+              <PropertyPage />
             }
           />
           <Route

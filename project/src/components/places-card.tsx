@@ -13,7 +13,7 @@ function PlacesCard (props: PlacesCardProps): JSX.Element {
   const {offer, className} = props;
   const {previewImage, price, title, type, rating, isPremium, id} = offer;
   const ratingStyle = {
-    width: `${rating * 20}%`,
+    width: `${Math.round(rating) * 20}%`,
   };
 
   const dispatch = useAppDispatch();
@@ -25,8 +25,8 @@ function PlacesCard (props: PlacesCardProps): JSX.Element {
 
   return (
     <article className={`${className}__card place-card`}
-      onMouseOver={mouseOverHandler}
-      onMouseLeave={mouseLeaveHandler}
+      onMouseOver={className === 'cities' ? mouseOverHandler : undefined}
+      onMouseLeave={className === 'cities' ? mouseLeaveHandler : undefined}
     >
       {isPremium && (
         <div className="place-card__mark">
