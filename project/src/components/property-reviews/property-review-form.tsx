@@ -21,21 +21,23 @@ function PropertyReviewForm ({id}: PropertyReviewProps): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const onChangeReviewHandler = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => setReviewData({ ...reviewData, [evt.target.name]: evt.target.value });
+  const onChangeTextReviewHandler = (evt: ChangeEvent<HTMLTextAreaElement> ) => setReviewData({ ...reviewData, comment: evt.target.value });
+  const onChangeInputReviewHandler = (evt: ChangeEvent<HTMLInputElement> ) => setReviewData({ ...reviewData, rating: +evt.target.value });
 
   const onSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(sendReviewAction(reviewData));
     reviewData.comment = '';
+    reviewData.rating = 0;
   };
 
   return (
     <form onSubmit={onSubmitHandler} className="reviews__form form" action="#" method="post">
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
-      <StarsRatingInput onChangeHandler={onChangeReviewHandler}/>
+      <StarsRatingInput onChangeHandler={onChangeInputReviewHandler} rating={reviewData.rating}/>
       <textarea
         value={reviewData.comment}
-        onChange={onChangeReviewHandler}
+        onChange={onChangeTextReviewHandler}
         className="reviews__textarea form__textarea"
         id="review"
         name="comment"
